@@ -38,6 +38,7 @@ router
   .post(ProductControler.addFavourite)
   .delete(ProductControler.deleteFavourite) 
   .get(ProductControler.getAllFavourites);
+  router.route("/update/:idProduct",ProductControler.updateProduct);
 
 
 module.exports = router;
