@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Static = require('../model/statistical');
+const staticUser = require('../model/statistical');
 const moment = require('moment');
 
 const getReveNue = async (req, res) => {
@@ -49,4 +50,38 @@ const postReveNue = async (req, res) => {
       }
 };
 
-module.exports = { getReveNue, postReveNue };
+const getUser = async(req,res)=>{
+    try {
+        const startOfDay = moment().startOf('day').toDate();
+        const endOfDay = moment().endOf('day').toDate();
+    
+        const result = await staticUser.countDocuments({
+          createdAt: { $gte: startOfDay, $lte: endOfDay },
+        });
+    
+        res.json({ newSignups: result });
+      } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+      }
+
+};
+const postUser = async(req,res)=>{
+    try {
+        const { username, email } = req.body;
+    
+        if (!username || !email) {
+          return res.status(400).json({ error: 'Username and email are required.' });
+        }
+    
+        const user = new staticUser({ username, email });
+        await user.save();
+    
+        res.json({ success: true, user });
+      } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+      }
+}
+
+module.exports = { getReveNue, postReveNue,getUser,postUser };

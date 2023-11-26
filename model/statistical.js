@@ -1,9 +1,19 @@
 const mongoose = require("mongoose");
-const staticScheme = new mongoose.Schema({
+const staticRevenueScheme = new mongoose.Schema({
   price: Number,
   createdAt: { type: Date, default: Date.now },
 
 });
- const Static = mongoose.model("Static", staticScheme);
+ const staticRevenue = mongoose.model("staticRevenue", staticRevenueScheme);
+module.exports = staticRevenue;
 
-module.exports = Static;
+
+
+const staticUserSchema = new mongoose.Schema({
+  username: String,
+  email: String,
+  createdAt: { type: Date, default: Date.now },
+});
+
+const staticUser = mongoose.model('staticUser', staticUserSchema);
+module.exports = staticUser;
